@@ -22,6 +22,14 @@ struct ContentView: View {
                 } else {
                     Text("No workout")
                 }
+
+                if !healthKitManager.locations.isEmpty {
+                    VStack {
+                        Text("Latitude \(healthKitManager.locations.first!.coordinate.latitude)")
+                        Text("Longitude \(healthKitManager.locations.first!.coordinate.longitude)")
+                    }
+                    .padding()
+                }
             }
         }
         .padding()
@@ -29,13 +37,13 @@ struct ContentView: View {
             if !HKHealthStore.isHealthDataAvailable() {
                 return
             }
-            
+
             guard await healthKitManager.requestAuthorization() == true else {
                 return
             }
-            
+
             permissionGranted = true;
-            
+
             await healthKitManager.getInitialData()
         }
     }
